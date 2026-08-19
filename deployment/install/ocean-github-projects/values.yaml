@@ -33,5 +33,5 @@ integration:
   eventListener:
     type: POLLING
   config:
-    githubOrganization: "mi-organizacion"   # ajustar a la organización real
+    githubOrganization: "Pragma-bootcamp"
     githubGraphqlUrl: "https://api.github.com/graphql"
