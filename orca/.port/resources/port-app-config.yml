@@ -1,0 +1,39 @@
+deleteDependentEntities: true
+createMissingRelatedEntities: true
+resources:
+  - kind: asset
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .asset_unique_id
+          title: .asset_name // .asset_unique_id
+          blueprint: '"orcaAsset"'
+          properties:
+            name: .asset_name
+            type: .asset_type
+            category: .asset_category
+            cloudProvider: .cloud_provider
+            accountName: .account_name
+  - kind: alert
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .state.alert_id
+          title: .type_string // .state.alert_id
+          blueprint: '"orcaAlert"'
+          properties:
+            severity: .state.severity
+            status: .state.status
+            score: .state.score
+            category: .category
+            type: .type_string // .type
+            description: .description
+            recommendation: .recommendation
+            createdAt: .state.created_at
+            lastSeen: .state.last_seen
+          relations:
+            asset: .asset_unique_id

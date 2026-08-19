@@ -1,0 +1,105 @@
+[
+  {
+    "identifier": "githubProject",
+    "title": "GitHub Project",
+    "icon": "Github",
+    "schema": {
+      "properties": {
+        "number": {
+          "title": "Number",
+          "type": "number"
+        },
+        "url": {
+          "title": "URL",
+          "type": "string",
+          "format": "url"
+        },
+        "closed": {
+          "title": "Closed",
+          "type": "boolean"
+        },
+        "public": {
+          "title": "Public",
+          "type": "boolean"
+        },
+        "creator": {
+          "title": "Creator",
+          "type": "string"
+        },
+        "shortDescription": {
+          "title": "Short Description",
+          "type": "string"
+        },
+        "createdAt": {
+          "title": "Created At",
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "title": "Updated At",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {}
+  },
+  {
+    "identifier": "githubProjectItem",
+    "title": "GitHub Project Item",
+    "icon": "Github",
+    "schema": {
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "url": {
+          "title": "URL",
+          "type": "string",
+          "format": "url"
+        },
+        "state": {
+          "title": "State",
+          "type": "string"
+        },
+        "repository": {
+          "title": "Repository",
+          "type": "string"
+        },
+        "archived": {
+          "title": "Archived",
+          "type": "boolean"
+        },
+        "createdAt": {
+          "title": "Created At",
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "title": "Updated At",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {
+      "project": {
+        "title": "Project",
+        "target": "githubProject",
+        "required": false,
+        "many": false
+      }
+    }
+  }
+]

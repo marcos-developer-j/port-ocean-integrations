@@ -1,0 +1,41 @@
+deleteDependentEntities: true
+createMissingRelatedEntities: true
+resources:
+  - kind: project
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .id
+          title: .title
+          blueprint: '"githubProject"'
+          properties:
+            number: .number
+            url: .url
+            closed: .closed
+            public: .public
+            creator: .creator.login
+            shortDescription: .shortDescription
+            createdAt: .createdAt
+            updatedAt: .updatedAt
+  - kind: project-item
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .id
+          title: .content.title // "Draft item"
+          blueprint: '"githubProjectItem"'
+          properties:
+            type: .type
+            status: '[.fieldValues.nodes[]? | select(.field?.name == "Status") | .name] | first'
+            url: .content.url
+            state: .content.state
+            repository: .content.repository.nameWithOwner
+            archived: .isArchived
+            createdAt: .createdAt
+            updatedAt: .updatedAt
+          relations:
+            project: .__project.id

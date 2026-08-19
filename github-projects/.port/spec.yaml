@@ -1,0 +1,24 @@
+title: GitHub Projects
+description: GitHub Projects V2 Ocean integration for Port (projects and project items via GraphQL)
+icon: Github
+features:
+  - type: exporter
+    section: Project management
+    resources:
+      - kind: project
+      - kind: project-item
+configurations:
+  - name: githubToken
+    required: true
+    type: string
+    sensitive: true
+    description: GitHub token with read access to organization projects (classic PAT with read:project scope or fine-grained with Projects read)
+  - name: githubOrganization
+    required: true
+    type: string
+    description: GitHub organization login to sync projects from
+  - name: githubGraphqlUrl
+    required: false
+    type: url
+    default: https://api.github.com/graphql
+    description: GitHub GraphQL API URL (change for GitHub Enterprise Server)

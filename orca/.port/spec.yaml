@@ -1,0 +1,20 @@
+title: Orca Security
+description: Orca Security Ocean integration for Port (assets and vulnerability alerts)
+icon: Alert
+features:
+  - type: exporter
+    section: Security & Compliance
+    resources:
+      - kind: asset
+      - kind: alert
+configurations:
+  - name: orcaApiUrl
+    required: false
+    type: url
+    default: https://api.orcasecurity.io
+    description: Orca Security API base URL (region-aware, e.g. https://api.eu.orcasecurity.io)
+  - name: orcaApiToken
+    required: true
+    type: string
+    sensitive: true
+    description: Orca Security API token

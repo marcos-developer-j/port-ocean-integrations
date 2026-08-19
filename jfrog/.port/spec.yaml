@@ -1,0 +1,22 @@
+title: JFrog
+description: JFrog Ocean integration for Port (repositories, builds, artifacts, projects and Xray violations)
+icon: JfrogXray
+features:
+  - type: exporter
+    section: Security & Compliance
+    resources:
+      - kind: project
+      - kind: repository
+      - kind: build
+      - kind: artifact
+      - kind: xray_violation
+configurations:
+  - name: jfrogHostUrl
+    required: true
+    type: url
+    description: The URL of the JFrog platform instance, for example https://mycompany.jfrog.io
+  - name: jfrogAccessToken
+    required: true
+    type: string
+    sensitive: true
+    description: JFrog platform access token with read permissions (and Xray read if applicable)

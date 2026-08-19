@@ -1,0 +1,45 @@
+deleteDependentEntities: true
+createMissingRelatedEntities: true
+resources:
+  - kind: application
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .guid
+          title: .profile.name // .guid
+          blueprint: '"veracodeApplication"'
+          properties:
+            name: .profile.name
+            businessCriticality: .profile.business_criticality
+            policyCompliance: '[.profile.policies[]?.policy_compliance_status] | first'
+            teams: '[.profile.teams[]?.team_name]'
+            created: .created
+            modified: .modified
+  - kind: finding
+    selector:
+      query: "true"
+      scanTypes:
+        - "STATIC"
+        - "SCA"
+    port:
+      entity:
+        mappings:
+          identifier: .__application.guid + "-" + (.issue_id | tostring)
+          title: .finding_details.finding_category.name // ("Finding " + (.issue_id | tostring))
+          blueprint: '"veracodeFinding"'
+          properties:
+            scanType: .scan_type
+            severity: .finding_details.severity
+            cweId: .finding_details.cwe.id
+            cweName: .finding_details.cwe.name
+            status: .finding_status.status
+            resolutionStatus: .finding_status.resolution_status
+            violatesPolicy: .violates_policy
+            firstFound: .finding_status.first_found_date
+            lastSeen: .finding_status.last_seen_date
+            description: .description
+            filePath: .finding_details.file_path
+          relations:
+            application: .__application.guid

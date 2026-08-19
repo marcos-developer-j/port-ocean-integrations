@@ -1,0 +1,155 @@
+[
+  {
+    "identifier": "jfrogProject",
+    "title": "JFrog Project",
+    "icon": "JfrogXray",
+    "schema": {
+      "properties": {
+        "description": {
+          "type": "string",
+          "title": "Description"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {}
+  },
+  {
+    "identifier": "jfrogRepository",
+    "title": "JFrog Repository",
+    "icon": "JfrogXray",
+    "schema": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Repository Type"
+        },
+        "packageType": {
+          "type": "string",
+          "title": "Package Type"
+        },
+        "url": {
+          "type": "string",
+          "format": "url",
+          "title": "Repository URL"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {}
+  },
+  {
+    "identifier": "jfrogBuild",
+    "title": "JFrog Build",
+    "icon": "JfrogXray",
+    "schema": {
+      "properties": {
+        "lastStarted": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Last Started"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {}
+  },
+  {
+    "identifier": "jfrogArtifact",
+    "title": "JFrog Artifact",
+    "icon": "JfrogXray",
+    "schema": {
+      "properties": {
+        "path": {
+          "type": "string",
+          "title": "Path"
+        },
+        "size": {
+          "type": "number",
+          "title": "Size"
+        },
+        "sha256": {
+          "type": "string",
+          "title": "SHA256"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Created"
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Modified"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {
+      "repository": {
+        "title": "Repository",
+        "target": "jfrogRepository",
+        "required": false,
+        "many": false
+      }
+    }
+  },
+  {
+    "identifier": "jfrogXrayViolation",
+    "title": "JFrog Xray Violation",
+    "icon": "JfrogXray",
+    "schema": {
+      "properties": {
+        "severity": {
+          "type": "string",
+          "title": "Severity"
+        },
+        "type": {
+          "type": "string",
+          "title": "Type"
+        },
+        "watchName": {
+          "type": "string",
+          "title": "Watch Name"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Created"
+        },
+        "infectedComponents": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "Infected Components"
+        },
+        "detailsUrl": {
+          "type": "string",
+          "format": "url",
+          "title": "Details URL"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {}
+  }
+]

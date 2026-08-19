@@ -1,0 +1,110 @@
+[
+  {
+    "identifier": "veracodeApplication",
+    "title": "Veracode Application",
+    "icon": "Lock",
+    "schema": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "businessCriticality": {
+          "title": "Business Criticality",
+          "type": "string"
+        },
+        "policyCompliance": {
+          "title": "Policy Compliance",
+          "type": "string"
+        },
+        "teams": {
+          "title": "Teams",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "created": {
+          "title": "Created",
+          "type": "string",
+          "format": "date-time"
+        },
+        "modified": {
+          "title": "Modified",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {}
+  },
+  {
+    "identifier": "veracodeFinding",
+    "title": "Veracode Finding",
+    "icon": "Lock",
+    "schema": {
+      "properties": {
+        "scanType": {
+          "title": "Scan Type",
+          "type": "string"
+        },
+        "severity": {
+          "title": "Severity",
+          "type": "number"
+        },
+        "cweId": {
+          "title": "CWE ID",
+          "type": "number"
+        },
+        "cweName": {
+          "title": "CWE Name",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "resolutionStatus": {
+          "title": "Resolution Status",
+          "type": "string"
+        },
+        "violatesPolicy": {
+          "title": "Violates Policy",
+          "type": "boolean"
+        },
+        "firstFound": {
+          "title": "First Found",
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastSeen": {
+          "title": "Last Seen",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "filePath": {
+          "title": "File Path",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {
+      "application": {
+        "title": "Application",
+        "target": "veracodeApplication",
+        "required": false,
+        "many": false
+      }
+    }
+  }
+]

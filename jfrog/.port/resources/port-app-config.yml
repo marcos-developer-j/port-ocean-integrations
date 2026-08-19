@@ -1,0 +1,73 @@
+deleteDependentEntities: true
+createMissingRelatedEntities: true
+resources:
+  - kind: project
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .project_key
+          title: .display_name // .project_key
+          blueprint: '"jfrogProject"'
+          properties:
+            description: .description
+  - kind: repository
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .key
+          title: .key
+          blueprint: '"jfrogRepository"'
+          properties:
+            type: .type
+            packageType: .packageType
+            url: .url
+            description: .description
+  - kind: build
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .uri | ltrimstr("/")
+          title: .uri | ltrimstr("/")
+          blueprint: '"jfrogBuild"'
+          properties:
+            lastStarted: .lastStarted
+  - kind: artifact
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .repo + "/" + .path + "/" + .name
+          title: .name
+          blueprint: '"jfrogArtifact"'
+          properties:
+            path: .path
+            size: .size
+            sha256: .sha256
+            created: .created
+            modified: .modified
+          relations:
+            repository: .repo
+  - kind: xray_violation
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .issue_id + "-" + (.watch_name // "no-watch")
+          title: .issue_id
+          blueprint: '"jfrogXrayViolation"'
+          properties:
+            severity: .severity
+            type: .type
+            watchName: .watch_name
+            description: .description
+            created: .created
+            infectedComponents: .infected_components
+            detailsUrl: .violation_details_url

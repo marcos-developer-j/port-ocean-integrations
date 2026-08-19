@@ -1,0 +1,93 @@
+[
+  {
+    "identifier": "orcaAsset",
+    "title": "Orca Asset",
+    "icon": "Cloud",
+    "schema": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "cloudProvider": {
+          "title": "Cloud Provider",
+          "type": "string"
+        },
+        "accountName": {
+          "title": "Account Name",
+          "type": "string"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {}
+  },
+  {
+    "identifier": "orcaAlert",
+    "title": "Orca Alert",
+    "icon": "Alert",
+    "schema": {
+      "properties": {
+        "severity": {
+          "title": "Severity",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        },
+        "category": {
+          "title": "Category",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "recommendation": {
+          "title": "Recommendation",
+          "type": "string"
+        },
+        "createdAt": {
+          "title": "Created At",
+          "type": "string",
+          "format": "date-time"
+        },
+        "lastSeen": {
+          "title": "Last Seen",
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {
+      "asset": {
+        "title": "Asset",
+        "target": "orcaAsset",
+        "required": false,
+        "many": false
+      }
+    }
+  }
+]

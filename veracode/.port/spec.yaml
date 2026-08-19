@@ -1,0 +1,25 @@
+title: Veracode
+description: Veracode Ocean integration for Port (applications and findings via HMAC-signed API)
+icon: Lock
+features:
+  - type: exporter
+    section: Security & Compliance
+    resources:
+      - kind: application
+      - kind: finding
+configurations:
+  - name: veracodeApiBase
+    required: false
+    type: url
+    default: https://api.veracode.com
+    description: Veracode API base URL (use the regional host if applicable)
+  - name: veracodeApiId
+    required: true
+    type: string
+    sensitive: true
+    description: Veracode API credentials ID (hex)
+  - name: veracodeApiSecret
+    required: true
+    type: string
+    sensitive: true
+    description: Veracode API credentials secret key (hex)
