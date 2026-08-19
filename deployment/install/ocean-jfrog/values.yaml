@@ -2,7 +2,7 @@
 # SIN credenciales: el chart referencia el Secret manual "ocean-jfrog-credentials"
 # creado a mano en el namespace port-idp (ver deployment/README.md, paso Secrets).
 port:
-  baseUrl: https://api.getport.io
+  baseUrl: https://api.us.getport.io
 
 initializePortResources: false
 scheduledResyncInterval: 120
