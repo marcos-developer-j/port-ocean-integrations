@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: port-idp
+  labels:
+    app.kubernetes.io/name: port-idp
+    app.kubernetes.io/part-of: port

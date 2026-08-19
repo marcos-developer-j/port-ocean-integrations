@@ -1,0 +1,36 @@
+# Values de la integración Ocean Veracode para el entorno laboratory.
+# SIN credenciales: el chart referencia el Secret manual "ocean-veracode-credentials"
+# creado a mano en el namespace port-idp (ver deployment/README.md, paso Secrets).
+port:
+  baseUrl: https://api.getport.io
+
+initializePortResources: false
+scheduledResyncInterval: 180
+
+# Imagen local construida con scripts/build-and-load.sh (kind la registra bajo docker.io/library)
+imageRegistry: docker.io/library
+image: "port-ocean-veracode:local"
+imagePullPolicy: Never
+
+# No crear el Secret desde el chart: usar el Secret manual del namespace.
+# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
+# OCEAN__INTEGRATION__CONFIG__VERACODE_API_ID, OCEAN__INTEGRATION__CONFIG__VERACODE_API_SECRET
+secret:
+  create: false
+  name: ocean-veracode-credentials
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+integration:
+  identifier: veracode
+  type: veracode
+  eventListener:
+    type: POLLING
+  config:
+    veracodeApiBase: "https://api.veracode.com"

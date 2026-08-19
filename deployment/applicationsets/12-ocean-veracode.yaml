@@ -1,0 +1,49 @@
+# Despliega la integración Ocean Veracode en cada cluster del entorno laboratory.
+# Multi-source: chart oficial port-ocean + values desde este repo ($values).
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ocean-veracode
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            project: port
+            environment: laboratory
+          matchExpressions:
+            - key: cloud
+              operator: Exists
+  template:
+    metadata:
+      name: 'port-ocean-veracode-{{.name}}'
+      annotations:
+        argocd.argoproj.io/sync-wave: "0"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      sources:
+        - repoURL: https://port-labs.github.io/helm-charts
+          chart: port-ocean
+          targetRevision: 0.23.4
+          helm:
+            releaseName: veracode
+            valueFiles:
+              - $values/deployment/install/ocean-veracode/values.yaml
+        - repoURL: https://github.com/marcos-developer-j/port-ocean-integrations.git
+          targetRevision: laboratory
+          ref: values
+      destination:
+        server: '{{.server}}'
+        namespace: port-idp
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true

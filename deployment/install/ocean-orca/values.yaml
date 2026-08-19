@@ -1,0 +1,36 @@
+# Values de la integración Ocean Orca Security para el entorno laboratory.
+# SIN credenciales: el chart referencia el Secret manual "ocean-orca-credentials"
+# creado a mano en el namespace port-idp (ver deployment/README.md, paso Secrets).
+port:
+  baseUrl: https://api.getport.io
+
+initializePortResources: false
+scheduledResyncInterval: 120
+
+# Imagen local construida con scripts/build-and-load.sh (kind la registra bajo docker.io/library)
+imageRegistry: docker.io/library
+image: "port-ocean-orca:local"
+imagePullPolicy: Never
+
+# No crear el Secret desde el chart: usar el Secret manual del namespace.
+# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
+# OCEAN__INTEGRATION__CONFIG__ORCA_API_TOKEN
+secret:
+  create: false
+  name: ocean-orca-credentials
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+integration:
+  identifier: orca
+  type: orca
+  eventListener:
+    type: POLLING
+  config:
+    orcaApiUrl: "https://api.orcasecurity.io"   # EU: https://api.eu.orcasecurity.io

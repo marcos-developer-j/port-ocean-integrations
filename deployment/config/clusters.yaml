@@ -1,0 +1,20 @@
+# Inventario de clusters por entorno (documentación / fuente de verdad).
+# Los ApplicationSets seleccionan clusters por estos labels, que deben estar
+# presentes en el Secret de registro del cluster en ArgoCD
+# (argocd.argoproj.io/secret-type: cluster). Ver bootstrap/cluster-laboratory.yaml.
+requiredClusterLabels:
+  - project
+  - cloud
+  - environment
+  - role
+
+environments:
+  laboratory:
+    - name: in-cluster
+      server: https://kubernetes.default.svc
+      labels:
+        project: port
+        cloud: local
+        environment: laboratory
+        role: active
+  main: []

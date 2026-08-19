@@ -1,0 +1,37 @@
+# Values de la integración Ocean GitHub Projects para el entorno laboratory.
+# SIN credenciales: el chart referencia el Secret manual "ocean-github-projects-credentials"
+# creado a mano en el namespace port-idp (ver deployment/README.md, paso Secrets).
+port:
+  baseUrl: https://api.getport.io
+
+initializePortResources: false
+scheduledResyncInterval: 60
+
+# Imagen local construida con scripts/build-and-load.sh (kind la registra bajo docker.io/library)
+imageRegistry: docker.io/library
+image: "port-ocean-github-projects:local"
+imagePullPolicy: Never
+
+# No crear el Secret desde el chart: usar el Secret manual del namespace.
+# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
+# OCEAN__INTEGRATION__CONFIG__GITHUB_TOKEN
+secret:
+  create: false
+  name: ocean-github-projects-credentials
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+integration:
+  identifier: github-projects
+  type: github-projects
+  eventListener:
+    type: POLLING
+  config:
+    githubOrganization: "mi-organizacion"   # ajustar a la organización real
+    githubGraphqlUrl: "https://api.github.com/graphql"

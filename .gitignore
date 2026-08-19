@@ -9,3 +9,6 @@ __pycache__/
 *.tfstate
 *.tfstate.backup
 terraform.tfvars
+
+# Manifests locales con credenciales reales (no versionar)
+deployment/secrets-local/

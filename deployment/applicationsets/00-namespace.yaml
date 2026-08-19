@@ -1,0 +1,46 @@
+# Crea el namespace port-idp en cada cluster registrado del entorno laboratory.
+# prune: false → protege los Secrets manuales creados dentro del namespace
+# (ArgoCD nunca los borra aunque no estén en git).
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: port-namespace
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            project: port
+            environment: laboratory
+          matchExpressions:
+            - key: cloud
+              operator: Exists
+  template:
+    metadata:
+      name: 'port-namespace-{{.name}}'
+      annotations:
+        argocd.argoproj.io/sync-wave: "-1"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/marcos-developer-j/port-ocean-integrations.git
+        targetRevision: laboratory
+        path: deployment/install/namespace
+      destination:
+        server: '{{.server}}'
+        namespace: port-idp
+      syncPolicy:
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+  # En entornos que no sean main la sincronización es automática (sin prune).
+  templatePatch: |
+    {{- if ne .metadata.labels.environment "main" }}
+    spec:
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: true
+    {{- end }}

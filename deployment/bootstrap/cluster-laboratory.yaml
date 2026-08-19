@@ -1,0 +1,19 @@
+# Registro declarativo del cluster local (in-cluster) en ArgoCD con los
+# labels que exigen los cluster generators de los ApplicationSets.
+# Se aplica a mano junto con root.yaml (kubectl apply -f bootstrap/).
+# Labels requeridos (ver config/clusters.yaml): project, cloud, environment, role.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cluster-in-cluster
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+    project: port
+    cloud: local
+    environment: laboratory
+    role: active
+type: Opaque
+stringData:
+  name: in-cluster
+  server: https://kubernetes.default.svc

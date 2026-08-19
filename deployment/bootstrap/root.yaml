@@ -1,0 +1,29 @@
+# App-of-apps: única Application que se aplica a mano (kubectl apply).
+# Sincroniza los ApplicationSets de deployment/applicationsets/ desde la
+# rama "laboratory"; a partir de ahí todo lo gestiona ArgoCD.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: port-ocean-root
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/marcos-developer-j/port-ocean-integrations.git
+    targetRevision: laboratory
+    path: deployment
+    directory:
+      recurse: true
+      include: "applicationsets/*.yaml"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
