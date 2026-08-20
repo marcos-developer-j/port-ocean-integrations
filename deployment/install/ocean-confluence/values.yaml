@@ -1,22 +1,35 @@
-# Values de la integración Ocean Confluence (vía integration.type: custom) para el entorno laboratory.
+# Values de la integración Ocean Confluence (custom desarrollada) para el entorno laboratory.
 # SIN credenciales: el chart referencia el Secret manual "ocean-confluence-credentials"
 # creado a mano en el namespace port-idp.
 #
-# NOTA: No existe integración Ocean oficial de Confluence. Se usa la integración "custom"
-# del repo oficial de Ocean que permite sincronizar cualquier API REST.
+# Esta es una integración CUSTOM DESARROLLADA (código Python propio en integrations/confluence/)
+# que convierte el contenido HTML de Confluence a Markdown automáticamente.
 port:
   baseUrl: https://api.us.getport.io
 
-# La integración custom NO trae blueprints por defecto: se crean manualmente
-# (ver docs/ocean-confluence.md Paso 5)
-initializePortResources: false
+# true = carga blueprints y mapping desde .port/resources/ automáticamente
+# Los blueprints son: confluenceSpace, confluencePage
+initializePortResources: true
 
 # Resync programado (minutos)
 scheduledResyncInterval: 120
 
+# Imagen CUSTOM: construida localmente con scripts/build-and-load.sh
+# Para producción con Artifact Registry, cambiar a:
+#   imageRegistry: us-central1-docker.pkg.dev/PROJECT_ID/port-ocean
+#   image: "port-ocean-confluence:0.1.0"
+#   imagePullPolicy: IfNotPresent
+imageRegistry: docker.io/library
+image: "port-ocean-confluence:local"
+imagePullPolicy: Never
+
 # Credenciales fuera de git: Secret manual creado en el namespace
-# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
-# OCEAN__INTEGRATION__CONFIG__USERNAME, OCEAN__INTEGRATION__CONFIG__PASSWORD
+# Debe contener:
+#   OCEAN__PORT__CLIENT_ID
+#   OCEAN__PORT__CLIENT_SECRET
+#   OCEAN__INTEGRATION__CONFIG__CONFLUENCE_BASE_URL
+#   OCEAN__INTEGRATION__CONFIG__CONFLUENCE_USERNAME
+#   OCEAN__INTEGRATION__CONFIG__CONFLUENCE_API_TOKEN
 secret:
   create: false
   name: ocean-confluence-credentials
@@ -31,19 +44,10 @@ resources:
 
 integration:
   identifier: confluence
-  # Tipo oficial "custom" (Ocean custom integration, repo oficial port-labs/ocean)
-  type: custom
+  type: confluence
   eventListener:
     type: POLLING
   config:
-    # Claves de config NO sensibles según spec oficial de la integración custom
-    baseUrl: https://SITIO.atlassian.net
-    authType: basic
-    # La API v2 de Confluence Cloud pagina por cursor y expone la siguiente página
-    # en la cabecera HTTP "Link" con rel="next"
-    paginationType: header_link
-    headerLinkRel: next
-    pageSize: "100"
-    sizeParam: limit
-    timeout: "30"
-    verifySsl: true
+    # La URL base va en el Secret para mayor flexibilidad
+    # Tamaño de página para paginación (opcional)
+    pageSize: 50

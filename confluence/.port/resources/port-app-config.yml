@@ -1,0 +1,43 @@
+deleteDependentEntities: true
+createMissingRelatedEntities: true
+resources:
+  - kind: space
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .id
+          title: .name
+          blueprint: '"confluenceSpace"'
+          properties:
+            key: .key
+            type: .type
+            status: .status
+            description: .description
+            homepageId: .homepageId
+            url: "\"https://\" + (.id | split(\"/\")[0]) + \".atlassian.net/wiki/spaces/\" + .key"
+
+  - kind: page
+    selector:
+      query: "true"
+    port:
+      entity:
+        mappings:
+          identifier: .id
+          title: .title
+          blueprint: '"confluencePage"'
+          properties:
+            status: .status
+            parentId: .parentId
+            parentType: .parentType
+            position: .position
+            authorId: .authorId
+            ownerId: .ownerId
+            createdAt: .createdAt
+            version: .version.number
+            url: .webUrl
+            # Contenido convertido a Markdown (la "visión")
+            markdown: .markdown
+          relations:
+            space: .__space.id

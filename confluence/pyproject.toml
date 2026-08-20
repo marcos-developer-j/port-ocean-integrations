@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "port-ocean-confluence"
+version = "0.1.0"
+description = "Port Ocean integration for Confluence with HTML to Markdown conversion"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+port-ocean = { version = "^0.15.4", extras = ["cli"] }
+markdownify = "^0.13.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

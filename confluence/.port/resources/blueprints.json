@@ -1,0 +1,117 @@
+[
+  {
+    "identifier": "confluenceSpace",
+    "title": "Confluence Space",
+    "icon": "Confluence",
+    "schema": {
+      "properties": {
+        "key": {
+          "type": "string",
+          "title": "Key",
+          "description": "Clave única del espacio"
+        },
+        "type": {
+          "type": "string",
+          "title": "Type",
+          "enum": ["global", "personal"],
+          "description": "Tipo de espacio"
+        },
+        "status": {
+          "type": "string",
+          "title": "Status",
+          "enum": ["current", "archived"],
+          "description": "Estado del espacio"
+        },
+        "description": {
+          "type": "string",
+          "title": "Description",
+          "description": "Descripción del espacio"
+        },
+        "homepageId": {
+          "type": "string",
+          "title": "Homepage ID",
+          "description": "ID de la página principal"
+        },
+        "url": {
+          "type": "string",
+          "format": "url",
+          "title": "URL",
+          "description": "URL del espacio en Confluence"
+        }
+      },
+      "required": ["key"]
+    },
+    "relations": {}
+  },
+  {
+    "identifier": "confluencePage",
+    "title": "Confluence Page",
+    "icon": "Confluence",
+    "schema": {
+      "properties": {
+        "status": {
+          "type": "string",
+          "title": "Status",
+          "enum": ["current", "trashed", "deleted", "historical", "draft"],
+          "description": "Estado de la página"
+        },
+        "parentId": {
+          "type": "string",
+          "title": "Parent ID",
+          "description": "ID de la página padre"
+        },
+        "parentType": {
+          "type": "string",
+          "title": "Parent Type",
+          "description": "Tipo del padre (page o space)"
+        },
+        "position": {
+          "type": "number",
+          "title": "Position",
+          "description": "Posición en el árbol de páginas"
+        },
+        "authorId": {
+          "type": "string",
+          "title": "Author ID",
+          "description": "ID del autor original"
+        },
+        "ownerId": {
+          "type": "string",
+          "title": "Owner ID",
+          "description": "ID del propietario actual"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Created At",
+          "description": "Fecha de creación"
+        },
+        "version": {
+          "type": "number",
+          "title": "Version",
+          "description": "Número de versión actual"
+        },
+        "url": {
+          "type": "string",
+          "format": "url",
+          "title": "URL",
+          "description": "URL de la página en Confluence"
+        },
+        "markdown": {
+          "type": "string",
+          "title": "Markdown Content",
+          "description": "Contenido de la página convertido a Markdown (README)"
+        }
+      },
+      "required": []
+    },
+    "relations": {
+      "space": {
+        "target": "confluenceSpace",
+        "title": "Space",
+        "required": false,
+        "many": false
+      }
+    }
+  }
+]
