@@ -1,0 +1,49 @@
+# Values de la integración Ocean Grafana (vía integration.type: custom) para el entorno laboratory.
+# SIN credenciales: el chart referencia el Secret manual "ocean-grafana-credentials"
+# creado a mano en el namespace port-idp.
+#
+# NOTA: No existe integración Ocean oficial de Grafana. Se usa la integración "custom"
+# del repo oficial de Ocean que permite sincronizar cualquier API REST.
+port:
+  baseUrl: https://api.us.getport.io
+
+# La integración custom NO trae blueprints por defecto: se crean manualmente
+# (ver docs/ocean-grafana.md Paso 5)
+initializePortResources: false
+
+# Resync programado (minutos)
+scheduledResyncInterval: 120
+
+# Credenciales fuera de git: Secret manual creado en el namespace
+# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
+# OCEAN__INTEGRATION__CONFIG__API_TOKEN
+secret:
+  create: false
+  name: ocean-grafana-credentials
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+integration:
+  identifier: grafana
+  # Tipo oficial "custom" (Ocean custom integration, en el repo oficial port-labs/ocean)
+  type: custom
+  eventListener:
+    type: POLLING
+  config:
+    # Claves de config NO sensibles según spec oficial de la integración custom
+    baseUrl: https://GRAFANA_HOST.example.com
+    authType: bearer_token
+    # /api/search de Grafana pagina con ?page=N&limit=M
+    paginationType: page
+    paginationParam: page
+    sizeParam: limit
+    pageSize: "100"
+    startPage: "1"
+    timeout: "30"
+    verifySsl: true

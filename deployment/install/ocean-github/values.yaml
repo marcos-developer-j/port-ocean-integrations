@@ -1,0 +1,39 @@
+# Values de la integración Ocean GitHub (github-ocean) para el entorno laboratory.
+# SIN credenciales: el chart referencia el Secret manual "ocean-github-credentials"
+# creado a mano en el namespace port-idp.
+port:
+  baseUrl: https://api.us.getport.io
+
+# Integración OFICIAL: NO se define imageRegistry/image/imagePullPolicy,
+# el chart usa ghcr.io/port-labs por defecto.
+
+# true = crea blueprints y mapping default automáticamente.
+# Alternativa: false + gestionar blueprints con Terraform (provider port-labs).
+# Si migras desde el GitHub app exporter clásico, usa createPortResourcesOrigin: Empty (ver doc).
+initializePortResources: true
+scheduledResyncInterval: 360   # minutos; GitHub tiene rate limits, un resync cada 6 h es razonable
+
+# No crear el Secret desde el chart: usar el Secret manual del namespace.
+# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
+# OCEAN__INTEGRATION__CONFIG__GITHUB_TOKEN
+secret:
+  create: false
+  name: ocean-github-credentials
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+integration:
+  identifier: github
+  type: github-ocean
+  eventListener:
+    type: POLLING
+  config:
+    githubOrganization: "Pragma-bootcamp"   # ajustar a la organización real
+    # organizations: '["org1","org2"]'      # multi-org (requiere PAT classic o GitHub App >= 6.5.0)
+    # githubHost: "https://ghe.miempresa.com/api/v3"  # solo GitHub Enterprise Server

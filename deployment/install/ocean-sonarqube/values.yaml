@@ -1,0 +1,39 @@
+# Values de la integración Ocean SonarQube para el entorno laboratory.
+# SIN credenciales: el chart referencia el Secret manual "ocean-sonarqube-credentials"
+# creado a mano en el namespace port-idp.
+port:
+  baseUrl: https://api.us.getport.io
+
+# Integración OFICIAL: NO se define imageRegistry/image/imagePullPolicy,
+# el chart usa ghcr.io/port-labs por defecto.
+
+# true = crea blueprints y mapping default automáticamente.
+# Alternativa: false + gestionar blueprints con Terraform (provider port-labs).
+initializePortResources: true
+scheduledResyncInterval: 120   # minutos; valor usado en la doc oficial, adecuado para calidad de código
+
+# No crear el Secret desde el chart: usar el Secret manual del namespace.
+# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
+# OCEAN__INTEGRATION__CONFIG__SONAR_API_TOKEN
+secret:
+  create: false
+  name: ocean-sonarqube-credentials
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+integration:
+  identifier: sonarqube
+  type: sonarqube
+  eventListener:
+    type: POLLING
+  config:
+    sonarOrganizationId: "mi-organizacion"   # Organization key de SonarCloud
+    # Variante self-hosted: sustituir config por:
+    # sonarUrl: "https://sonarqube.miempresa.com"
+    # sonarIsOnPremise: true

@@ -1,0 +1,39 @@
+# Values de la integración Ocean GCP (oficial) para el entorno laboratory.
+# SIN credenciales: el chart referencia el Secret manual "ocean-gcp-credentials"
+# creado a mano en el namespace port-idp.
+port:
+  baseUrl: https://api.us.getport.io
+
+# Integración OFICIAL: crea blueprints y mapping por defecto en el primer arranque
+initializePortResources: true
+
+# Resync programado (minutos)
+scheduledResyncInterval: 1440
+
+# Imagen oficial de ghcr.io/port-labs (default del chart): NO definir
+# imageRegistry custom ni imagePullPolicy Never.
+
+# No crear el Secret desde el chart: usar el Secret manual del namespace.
+# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
+# OCEAN__INTEGRATION__CONFIG__ENCODED_ADC_CONFIGURATION
+secret:
+  create: false
+  name: ocean-gcp-credentials
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"
+
+integration:
+  identifier: gcp
+  type: gcp
+  eventListener:
+    type: POLLING
+  config:
+    # Cuota de peticiones/min a Cloud Asset Inventory (default oficial: 400).
+    # Ajusta si tu proyecto host tiene otra cuota de searchAllResources.
+    searchAllResourcesPerMinuteQuota: 400

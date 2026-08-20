@@ -1,0 +1,49 @@
+# Values de la integración Ocean Confluence (vía integration.type: custom) para el entorno laboratory.
+# SIN credenciales: el chart referencia el Secret manual "ocean-confluence-credentials"
+# creado a mano en el namespace port-idp.
+#
+# NOTA: No existe integración Ocean oficial de Confluence. Se usa la integración "custom"
+# del repo oficial de Ocean que permite sincronizar cualquier API REST.
+port:
+  baseUrl: https://api.us.getport.io
+
+# La integración custom NO trae blueprints por defecto: se crean manualmente
+# (ver docs/ocean-confluence.md Paso 5)
+initializePortResources: false
+
+# Resync programado (minutos)
+scheduledResyncInterval: 120
+
+# Credenciales fuera de git: Secret manual creado en el namespace
+# Debe contener: OCEAN__PORT__CLIENT_ID, OCEAN__PORT__CLIENT_SECRET,
+# OCEAN__INTEGRATION__CONFIG__USERNAME, OCEAN__INTEGRATION__CONFIG__PASSWORD
+secret:
+  create: false
+  name: ocean-confluence-credentials
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+integration:
+  identifier: confluence
+  # Tipo oficial "custom" (Ocean custom integration, repo oficial port-labs/ocean)
+  type: custom
+  eventListener:
+    type: POLLING
+  config:
+    # Claves de config NO sensibles según spec oficial de la integración custom
+    baseUrl: https://SITIO.atlassian.net
+    authType: basic
+    # La API v2 de Confluence Cloud pagina por cursor y expone la siguiente página
+    # en la cabecera HTTP "Link" con rel="next"
+    paginationType: header_link
+    headerLinkRel: next
+    pageSize: "100"
+    sizeParam: limit
+    timeout: "30"
+    verifySsl: true
