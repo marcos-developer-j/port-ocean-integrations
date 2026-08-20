@@ -1,0 +1,88 @@
+# Ingress para recibir webhooks de servicios externos.
+# Cada integración Ocean expone el puerto 8000 para webhooks.
+#
+# IMPORTANTE: Este es un EJEMPLO. Adapta según tu entorno:
+# - Dominio real en lugar de localhost
+# - TLS con cert-manager en producción
+# - Paths según las integraciones que necesites
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ocean-webhooks
+  namespace: port-idp
+  annotations:
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true"  # descomentar con TLS
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  # Descomentar para TLS (requiere cert-manager o secreto manual):
+  # tls:
+  #   - hosts:
+  #       - webhooks.tudominio.com
+  #     secretName: ocean-webhooks-tls
+  rules:
+    # Si usas ngrok/cloudflared, el host es "*" o puedes omitir el host
+    - http:
+        paths:
+          # GitHub Ocean
+          - path: /webhook/github
+            pathType: Prefix
+            backend:
+              service:
+                name: github-port-ocean
+                port:
+                  number: 8000
+
+          # ArgoCD
+          - path: /webhook/argocd
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd-port-ocean
+                port:
+                  number: 8000
+
+          # SonarQube
+          - path: /webhook/sonarqube
+            pathType: Prefix
+            backend:
+              service:
+                name: sonarqube-port-ocean
+                port:
+                  number: 8000
+
+          # Dynatrace
+          - path: /webhook/dynatrace
+            pathType: Prefix
+            backend:
+              service:
+                name: dynatrace-port-ocean
+                port:
+                  number: 8000
+
+          # ServiceNow
+          - path: /webhook/servicenow
+            pathType: Prefix
+            backend:
+              service:
+                name: servicenow-port-ocean
+                port:
+                  number: 8000
+
+          # Integraciones custom (jfrog, orca, veracode, github-projects, confluence)
+          # Estas típicamente usan POLLING, pero si implementas webhooks:
+          - path: /webhook/jfrog
+            pathType: Prefix
+            backend:
+              service:
+                name: jfrog-port-ocean
+                port:
+                  number: 8000
+
+          - path: /webhook/github-projects
+            pathType: Prefix
+            backend:
+              service:
+                name: github-projects-port-ocean
+                port:
+                  number: 8000

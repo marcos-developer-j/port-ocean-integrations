@@ -1,0 +1,38 @@
+# EJEMPLO: Values de ocean-github con webhooks habilitados.
+# Copia este contenido a deployment/install/ocean-github/values.yaml
+# y ajusta appHost a tu URL pública real.
+#
+# Comparación con la versión POLLING:
+# - eventListener.type: POLLING → WEBHOOK
+# - Se agrega: integration.config.appHost
+port:
+  baseUrl: https://api.us.getport.io
+
+initializePortResources: true
+scheduledResyncInterval: 360  # resync de backup cada 6 horas
+
+secret:
+  create: false
+  name: ocean-github-credentials
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "50m"
+  limits:
+    memory: "512Mi"
+    cpu: "500m"
+
+integration:
+  identifier: github
+  type: github-ocean
+  eventListener:
+    type: WEBHOOK  # <- CAMBIO: era POLLING
+  config:
+    githubOrganization: "mi-organizacion"
+    # URL pública donde GitHub enviará los webhooks.
+    # Ejemplos:
+    #   ngrok:       https://abc123.ngrok.io/webhook/github
+    #   cloudflared: https://tunnel.tudominio.com/webhook/github
+    #   producción:  https://webhooks.tudominio.com/webhook/github
+    appHost: "https://TU-URL-PUBLICA/webhook/github"  # <- AGREGAR
